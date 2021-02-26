@@ -1,0 +1,294 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAR Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link href="~/resources/wx/font_1232253_l6oqbm0r4ir.css" rel="stylesheet" />
+    <link href="~/Scripts/asset/css/default.css" rel="stylesheet" />
+</head>
+<body>
+    <p style="text-align:center; margin-top:200px;"><i class="iconfont iconwodepaidui" style="font-size:8em;">&nbsp;</i></p>
+    <div class="footer">
+        <input type="button" value="打开摄像头" id="openCamera" />
+        <select class="none" id="videoDevice"></select>
+        <input class="none" type="button" value="开始识别" id="start" />
+        <input class="none" type="button" value="停止识别" id="stop" />
+    </div>
+    <script src="~/Scripts/asset/js/adapter.js"></script>
+    <script src="~/Scripts/asset/js/vconsole.min.js"></script>
+    <script src="~/Scripts/asset/js/webar.js"></script>
+    @*<script src="~/Scripts/asset/js/app.js"></script>*@
+    <script>
+    (function(){
+        var vConsole = new VConsole();
+        const now = (new Date()).getTime();
+        const e = document.createElement('script');
+        e.setAttribute('src', `../Scripts/asset/js/app.js?t=${now}`);
+        document.body.appendChild(e);
+        var u = navigator.userAgent, app = navigator.appVersion;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if (isIOS) {
+            alert("苹果果机！")
+        }
+
+
+    })();
+
+    function errorFunc(e) {
+        alert('Error！' + e);
+    }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+@*<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Camera selection</title>
+    <link href="~/Scripts/app.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style>
+        .circleImg{
+  border-radius: 50%;
+  /*width:320px;
+  height:320px;*/
+}
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="controls">
+            <button id="button">打开相机</button>
+            <select id="select">*@@*<option selected="selected">默认前或者后摄像头</option>*@@*</select>
+        </div>
+
+        <video class="circleImg" id="video" autoplay="autoplay" playsinline=""></video>
+    </main>
+    <footer>
+       
+
+    </footer>
+
+    
+    <script src="~/Scripts/app.js"></script>
+
+
+</body>
+</html>*@
+
+
+
+
+
+
+
+@*<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>摄像头调用</title>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            background: #4C5666;
+        }
+
+        #video {
+            width: 610px;
+            height: 510px;
+            background-color: #fff;
+            margin: 100px auto 0;
+            border-radius: 10px;
+        }
+
+        .video_top {
+            width: 100%;
+            height: 50px;
+            /* background-color: #0ff; */
+            line-height: 50px;
+        }
+
+            .video_top a {
+                float: left;
+                text-decoration: none;
+                color: #000;
+                margin-left: 20px;
+            }
+
+            .video_top p {
+                float: left;
+                margin-left: 200px;
+            }
+
+        .video_con {
+            height: 410px;
+            background: #787878;
+        }
+
+        .video_bot {
+            height: 50px;
+            line-height: 50px;
+            margin-left: 20px;
+        }
+
+            .video_bot a {
+                color: #000;
+                text-decoration: none;
+            }
+
+        #canvas {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="video">
+        <div class="video_top">
+            <a href="javascript:;" onclick="getPhoto()">拍照</a>
+            <p>相机</p>
+        </div>
+        <div class="video_con">
+            <video id="v" width="610" height="410" autoplay></video>
+        </div>
+    </div>
+    <canvas id="canvas" width="610" height="400"></canvas>*@
+    
+
+    
+
+ 
+
+    
+    @*<script>
+
+    var can, ctx;
+
+    ~(function () {*@
+      @*//// 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
+      //  if (navigator.mediaDevices === undefined) {
+      //      alert(11);
+      //  navigator.mediaDevices = {};
+      //}
+      //if (navigator.mediaDevices.getUserMedia === undefined) {
+      //  navigator.mediaDevices.getUserMedia = function (constraints) {
+      //    // 首先，如果有getUserMedia的话，就获得它
+      //      var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;//navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+      //    alert(getUserMedia);
+      //    // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口
+      //    if (!getUserMedia) {
+      //      return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+      //    }
+
+      //    // 否则，为老的navigator.getUserMedia方法包裹一个Promise
+      //    return new Promise(function (resolve, reject) {
+      //      getUserMedia.call(navigator, constraints, resolve, reject);
+      //    });
+      //  }
+      //} 
+      //const constraints = {
+      //  video: true,  //打开摄像头
+      //  audio: false  //打开录音
+      //};
+      //let promise = navigator.mediaDevices.getUserMedia(constraints);
+      //promise.then(stream => {
+      //  let v = document.getElementById('v');
+      //  // 旧的浏览器可能没有srcObject
+      //  if ("srcObject" in v) {
+      //    v.srcObject = stream;
+      //  } else {
+      //    // 防止再新的浏览器里使用它，应为它已经不再支持了
+      //    v.src = window.URL.createObjectURL(stream);
+      //  }
+      //  v.onloadedmetadata = function (e) {
+      //    v.play();
+      //  };
+      //}).catch(err => {
+      //  console.error(err.name + ": " + err.message);
+      //})*@
+
+        @*var constraints = { audio: true, video: { width: 1280, height: 720 } };
+
+        // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
+      if (navigator.mediaDevices === undefined) {
+          navigator.mediaDevices = {};
+      }
+
+        // 一些浏览器部分支持 mediaDevices。我们不能直接给对象设置 getUserMedia 
+        // 因为这样可能会覆盖已有的属性。这里我们只会在没有getUserMedia属性的时候添加它。
+      if (navigator.mediaDevices.getUserMedia === undefined) {
+          navigator.mediaDevices.getUserMedia = function (constraints) {
+
+              // 首先，如果有getUserMedia的话，就获得它
+              var getUserMedia = navigator.getUserMedia||navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+              // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口
+              if (!getUserMedia) {
+                  return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+              }
+
+              // 否则，为老的navigator.getUserMedia方法包裹一个Promise
+              return new Promise(function (resolve, reject) {
+                  getUserMedia.call(navigator, constraints, resolve, reject);
+              });
+          }
+      }
+
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then(function (stream) {
+          var video = document.querySelector('video');
+          // 旧的浏览器可能没有srcObject
+          if ("srcObject" in video) {
+              video.srcObject = stream;
+          } else {
+              // 防止在新的浏览器里使用它，应为它已经不再支持了
+              video.src = window.URL.createObjectURL(stream);
+          }
+          video.onloadedmetadata = function (e) {
+              video.play();
+          };
+      })
+      .catch(function (err) {
+          console.log(err.name + ": " + err.message);
+          alert(err.name + ": " + err.message);
+      });
+
+
+      can = document.getElementById("canvas")
+      ctx = can.getContext('2d');
+
+    })();
+    function getPhoto() {  //截图
+      ctx.drawImage(v, 0, 0, 610, 410);
+    }
+    </script>*@
+@*</body>
+
+</html>*@
+

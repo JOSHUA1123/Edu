@@ -1,0 +1,83 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>FaceView</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.10.3/dingtalk.open.js"></script>
+    <script>
+        var code='';
+        $(function () {
+            ///alert(123);
+
+            getdd();
+           
+            //alert(code);
+            //while (code!='') {
+            //    $.ajax({
+            //        url: '/Home/GetCodes',
+            //        type: 'post',
+            //        data: { code: code },
+            //        dataType: 'json',
+            //        success: function (data) {
+            //        }
+            //    });
+            //}
+           
+
+        });
+
+        function getdd() {
+
+            dd.ready(function () {
+                
+                // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
+                dd.runtime.permission.requestAuthCode({
+                    corpId: "ding6c7823a97c7c8db335c2f4657eb6378f",
+                    onSuccess: function (info) {
+                        //alert(JSON.stringify(info));
+                        code = info.code;
+                        $.ajax({
+                            url: '/Home/GetCodes',
+                            type: 'post',
+                            data: { code: code },
+                            dataType: 'json',
+                            success: function (data) {
+                                //alert(JSON.stringify(data));
+                                if (data.flag == 1 && data.staffNO!="") {
+                                    location.href = "/home/FaceSB?staffNO=" + data.staffNO
+                                } else if (data.flag == 2 && data.staffNO != "") {
+                                    location.href = "/home/FaceRe?staffNO=" + data.staffNO
+                                }
+                            }
+                        });
+                        //alert(code);
+                    },
+                    onFail: function (err) {
+                        alert('dd error: ' + JSON.stringify(err));
+                    }
+
+                });
+            });
+
+            //alert(code);
+        }
+
+       
+
+        
+        
+    </script>
+</head>
+<body>
+    <div> 
+       
+    </div>
+</body>
+</html>

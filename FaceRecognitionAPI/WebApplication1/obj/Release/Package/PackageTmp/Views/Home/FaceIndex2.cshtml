@@ -1,0 +1,339 @@
+﻿@{
+    ViewBag.Title = "FaceIndex";
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>HTML5 GetUserMedia Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+   
+    <script src="~/Content/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/html2canvas.js"></script>
+</head>
+<body>
+    @*<input type="button" title="开启摄像头" value="开启摄像头" onclick="getMedia();" />
+    <input type="button" title="关闭摄像头" value="关闭摄像头" onclick="CloseMedia();" />*@
+    <input type="button" title="识别" value="识别" onclick="getPhoto();" /><br />
+    <div>
+        <video style="width:320px;display:none" autoplay="autoplay"></video><hr />
+    </div>
+    <br />
+
+    <canvas id="backcanvas" width="320" height="300" style="position:fixed;top:80px;left:130px;"></canvas>
+    <canvas id="frontcanvas" width="320" height="300" style="position: fixed; top: 80px; left: 130px;"></canvas>
+
+
+    <canvas id="canvas1" width="320" height="300" style="display:none"></canvas>
+    <input type="button" style="display:none" title="视频" value="视频" onclick="getVedio();" /><br />
+    <canvas id="canvas2" width="320" height="300" style="display:none"></canvas>
+   
+    <div style="position: absolute; top: 100px; left: 500px;">
+         <label style="color:red" id="yes"></label><br /><br />
+        <label id="UserName"></label><br /><br />
+        <label id="Sex"></label><br /><br />
+        <label id="Month"></label><br /><br />
+        <label id="Works"></label><br /><br />
+    </div>
+    
+   
+    <script type="text/javascript">
+
+
+        var video = document.querySelector('video');
+        var audio, audioType;
+
+        var canvas1 = document.getElementById('canvas1');
+        var context1 = canvas1.getContext('2d');
+
+        var canvas2 = document.getElementById('backcanvas');
+        var context2 = canvas2.getContext('2d');
+
+        //navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+        window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+        navigator.getUserMedia = navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia;
+        //var exArray = []; //存储设备源ID
+        //MediaStreamTrack.getSources(function (sourceInfos) {
+        //    for (var i = 0; i != sourceInfos.length; ++i) {
+        //        var sourceInfo = sourceInfos[i];
+        //        //这里会遍历audio,video，所以要加以区分
+        //        if (sourceInfo.kind === 'video') {
+        //            exArray.push(sourceInfo.id);
+        //        }
+        //    }
+        //});
+
+        $(function () {
+            getMedia();
+        });
+
+
+        function getMedia() {
+            //if (navigator.getUserMedia) {
+            //    navigator.getUserMedia({
+            //        'video': {
+            //            'optional': [{
+            //                'sourceId': ""//exArray[1] //0为前置摄像头，1为后置
+            //            }]
+            //        },
+            //        'audio': true
+            //    }, successFunc, errorFunc); //success是获取成功的回调函数
+            //}
+            //else {
+            //    alert('Native device media streaming (getUserMedia) not supported in this browser.');
+            //}
+            if (navigator.getUserMedia) {
+                navigator.getUserMedia({
+                    audio: true,
+                    video: {
+                        width: 320,
+                        height: 300
+                    }
+                },
+                    function (stream) {
+                        var video = document.querySelector('video');
+                        video.srcObject = stream;
+                        video.onloadedmetadata = function (e) {
+                            video.play();
+                        };
+                    },
+                    function (err) {
+                        alert("The following error occurred: " + err.name);
+                    }
+                );
+            } else {
+                var div = document.createElement("div");
+                div.innerHTML = 'getUserMedia not supported';
+                document.body.appendChild(div);
+                alert("getUserMedia not supported");
+            }
+
+        }
+
+        function successFunc(stream) {
+            mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[1];
+            //alert('Succeed to get media!');
+            if (video.mozSrcObject !== undefined) {
+                //Firefox中，video.mozSrcObject最初为null，而不是未定义的，我们可以靠这个来检测Firefox的支持
+                video.mozSrcObject = stream;
+            }
+            else {
+
+                try {
+                    video.src = window.URL.createObjectURL(stream);
+                } catch (e) {
+                    video.srcObject = stream;
+                }
+                // video.src = window.URL && window.URL.createObjectURL(stream) || stream;
+            }
+
+            //video.play();
+
+            // 音频
+            audio = new Audio();
+            audioType = getAudioType(audio);
+            if (audioType) {
+                audio.src = 'polaroid.' + audioType;
+                audio.play();
+            }
+        }
+        function errorFunc(e) {
+            alert('Error！' + e);
+        }
+
+        // 将视频帧绘制到Canvas对象上,Canvas每60ms切换帧，形成肉眼视频效果
+        function drawVideoAtCanvas(video, context) {
+            window.setInterval(function () {
+                context.drawImage(video, 0, 0, 370, 370);
+            }, 20);
+        }
+
+        //获取音频格式
+        function getAudioType(element) {
+            if (element.canPlayType) {
+                if (element.canPlayType('audio/mp4; codecs="mp4a.40.5"') !== '') {
+                    return ('aac');
+                } else if (element.canPlayType('audio/ogg; codecs="vorbis"') !== '') {
+                    return ("ogg");
+                }
+            }
+            return false;
+        }
+
+        // vedio播放时触发，绘制vedio帧图像到canvas
+        video.addEventListener('play', function () {
+            drawVideoAtCanvas(video, context2);
+        }, false);
+
+        //拍照
+        function getPhoto() {
+            context1.drawImage(video, 0, 0, 320, 320); //将video对象内指定的区域捕捉绘制到画布上指定的区域，实现拍照。
+
+            //获取网页中的canvas对象
+            var canvas = $('#canvas1')[0];
+            //调用convertCanvasToImage函数将canvas转化为img形式
+            var img = convertCanvasToImage(canvas);
+            //将img插入容器
+            //$('#img').append(img);
+
+            //进行人脸识别相关操作
+            $.ajax({
+                url: '/Home/Face_Distinguish',
+                type: 'post',
+                data: { imgData64: img.src },
+                dataType: 'json',   
+                success: function (data) {
+                    var other = data.other;
+                    if (data.res == false) {
+                        alert(data.info);
+                        return;
+                    }
+                    else {
+                        data = eval("(" + data.info + ")");
+                        if (data.startcode == 221) {
+                            alert("当前人脸已存在！");
+                            return;
+                        }
+                        else if (data.error_code == 0 && data.error_msg == "SUCCESS") {
+                            //识别成功,进行相应的操作，如登录，开闸等
+                            $.ajax({
+                                url: '/Home/Face_UserInfoList',
+                                type: 'post',
+                                data: { Guid_Id: data.result.user_list[0].user_info },
+                                dataType: 'json',
+                                success: function (data) {
+                                    data = eval("(" + data.info + ")");
+                                    $("#UserName").html(" <label>姓名：</label>"+data[0].UserName);
+                                    $("#Sex").html("<label>性别：</label>"+data[0].Sex);
+                                    $("#Month").html("<label>出生年月：</label>"+data[0].Month);
+                                    $("#Works").html("<label>工作/学习单位：</label>"+data[0].Works);
+                                    $("#yes").html("识别成功");
+
+                                }
+                            });
+                        }
+                        else {
+                            alert("错误信息（具体信息可参照官网错误码）：" + data.error_msg);
+                            return;
+                        }
+                    }
+
+                }
+            });
+
+
+        }
+
+        //从 canvas 提取图片 image
+        function convertCanvasToImage(canvas) {
+            //新Image对象，可以理解为DOM
+            var image = new Image();
+            // canvas.toDataURL 返回的是一串Base64编码的URL
+            // 指定格式 PNG
+            image.src = canvas.toDataURL("image/png");
+            return image;
+        }
+
+        //视频
+        function getVedio() {
+            drawVideoAtCanvas(video, context2);
+        }
+
+        //关闭摄像头
+        function CloseMedia() {
+            mediaStreamTrack && mediaStreamTrack.stop();
+        }
+
+        //获取guid
+        function guid() {
+            function S4() {
+                return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+            }
+            return (S4() + S4() + "" + S4() + "" + S4() + "" + S4() + "" + S4() + S4() + S4());
+        }
+
+
+
+
+
+
+
+
+
+
+        var interval, frontCanvas, backCanvas, frontCtx, backCtx, img;
+        var yFrontPosition = 0, step = 10, canvasWidth, canvasHeight;
+        var canvasX = 0, canvasY = 0;
+
+        window.onload = function () {
+            initPageEle();
+            drawImg();
+            startrun();
+        }
+        function drawImg() {
+            img = new Image();
+            img.src = "/Content/face.png";
+            //img.onload = loadImg;
+        }
+        function initPageEle() {
+            frontcanvas = document.getElementById("frontcanvas");
+            backCanvas = document.getElementById("backcanvas");
+            frontCtx = frontcanvas.getContext("2d");
+            backCtx = backCanvas.getContext("2d");
+            canvasWidth = backCanvas.width;
+            canvasHeight = backCanvas.height;
+            backCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+            backCtx.strokeStyle = "#24303a";
+            backCtx.lineWidth = 2;
+            frontCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+            frontCtx.strokeStyle = "white";
+            frontCtx.lineWidth = 2;
+        }
+        function loadImg() {
+            backCtx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+            drawBackground();
+        }
+        function startrun() {
+            interval = setInterval(draw, 100);
+        }
+        function draw() {
+            drawFront();
+        }
+        function drawFront() {
+            yFrontPosition = yFrontPosition + step;
+            frontCtx.fillRect(canvasX, canvasY, canvasWidth, canvasHeight);
+            frontCtx.clearRect(canvasX, canvasY, canvasWidth, canvasHeight);
+            frontCtx.beginPath();
+            frontCtx.moveTo(canvasX, yFrontPosition);
+            frontCtx.lineTo(canvasWidth, yFrontPosition);
+            frontCtx.stroke();
+            frontCtx.closePath();
+            if (yFrontPosition >= canvasHeight) {
+                yFrontPosition = canvasX;
+            }
+        }
+        function drawBackground() {
+            backCtx.fillStyle = "#24303a";
+            backCtx.globalAlpha = 0.4;
+            backCtx.beginPath();
+            backCtx.moveTo(canvasX, canvasY);
+            backCtx.lineTo(canvasX + canvasWidth, canvasY);
+            backCtx.lineTo(canvasX + canvasWidth, canvasY + canvasHeight);
+            backCtx.lineTo(canvasX, canvasY + canvasHeight);
+            backCtx.lineTo(canvasX, canvasY);
+            backCtx.fill();
+            backCtx.closePath();
+            backCtx.stroke();
+        }
+        function stop() {
+            clearInterval(interval);
+        }
+
+
+    </script>
+</body>
+</html>
+
+

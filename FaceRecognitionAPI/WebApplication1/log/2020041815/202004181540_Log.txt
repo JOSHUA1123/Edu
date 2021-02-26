@@ -1,0 +1,7 @@
+2020-04-18 03:40:07, {"error_code":222202,"error_msg":"pic not has face","log_id":7900125754500,"timestamp":1587195583,"cached":0,"result":null}
+2020-04-18 03:40:20, {"error_code":222202,"error_msg":"pic not has face","log_id":4599794545055,"timestamp":1587195596,"cached":0,"result":null}
+2020-04-18 03:40:25, {"error_code":222202,"error_msg":"pic not has face","log_id":3545945515559,"timestamp":1587195602,"cached":0,"result":null}
+2020-04-18 03:40:32, {"error_code":222202,"error_msg":"pic not has face","log_id":9465555584058,"timestamp":1587195608,"cached":0,"result":null}
+2020-04-18 03:40:40, {"error_code":222202,"error_msg":"pic not has face","log_id":9410115797999,"timestamp":1587195616,"cached":0,"result":null}
+2020-04-18 03:40:50, {"error_code":222202,"error_msg":"pic not has face","log_id":6575792575896,"timestamp":1587195626,"cached":0,"result":null}
+2020-04-18 03:40:57, {"error_code":222202,"error_msg":"pic not has face","log_id":9475759455001,"timestamp":1587195633,"cached":0,"result":null}

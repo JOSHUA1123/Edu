@@ -1,0 +1,10 @@
+D:\搜狗高速下载\人脸识别demo\WebApplication1\FaceModel\bin\Release\FaceModel.dll
+D:\搜狗高速下载\人脸识别demo\WebApplication1\FaceModel\bin\Release\FaceModel.pdb
+D:\搜狗高速下载\人脸识别demo\WebApplication1\FaceModel\obj\Release\FaceModel.csprojResolveAssemblyReference.cache
+D:\搜狗高速下载\人脸识别demo\WebApplication1\FaceModel\obj\Release\FaceModel.dll
+D:\搜狗高速下载\人脸识别demo\WebApplication1\FaceModel\obj\Release\FaceModel.pdb
+F:\testsssss\人脸识别程序\WebApplication1\FaceModel\bin\Release\FaceModel.dll
+F:\testsssss\人脸识别程序\WebApplication1\FaceModel\bin\Release\FaceModel.pdb
+F:\testsssss\人脸识别程序\WebApplication1\FaceModel\obj\Release\FaceModel.csprojResolveAssemblyReference.cache
+F:\testsssss\人脸识别程序\WebApplication1\FaceModel\obj\Release\FaceModel.dll
+F:\testsssss\人脸识别程序\WebApplication1\FaceModel\obj\Release\FaceModel.pdb

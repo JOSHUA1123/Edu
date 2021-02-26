@@ -1,0 +1,15 @@
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\WindowsFace.exe.config
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\WindowsFace.exe
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\WindowsFace.pdb
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\AipSdk.dll
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\Newtonsoft.Json.dll
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\AipSdk.pdb
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\obj\Debug\WindowsFace.csprojResolveAssemblyReference.cache
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\obj\Debug\WindowsFace.Form1.resources
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\obj\Debug\WindowsFace.Properties.Resources.resources
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\obj\Debug\WindowsFace.csproj.GenerateResource.Cache
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\obj\Debug\WindowsFace.exe
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\obj\Debug\WindowsFace.pdb
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\MPWeiXin.dll
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\HttpHelper.dll
+F:\testsssss\人脸识别程序\WebApplication1\WindowsFace\bin\Debug\MPWeiXin.pdb

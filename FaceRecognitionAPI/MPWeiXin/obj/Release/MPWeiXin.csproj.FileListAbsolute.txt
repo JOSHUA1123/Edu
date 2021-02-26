@@ -1,0 +1,12 @@
+D:\搜狗高速下载\人脸识别demo\WebApplication1\MPWeiXin\bin\Release\MPWeiXin.dll
+D:\搜狗高速下载\人脸识别demo\WebApplication1\MPWeiXin\bin\Release\MPWeiXin.pdb
+D:\搜狗高速下载\人脸识别demo\WebApplication1\MPWeiXin\bin\Release\HttpHelper.dll
+D:\搜狗高速下载\人脸识别demo\WebApplication1\MPWeiXin\obj\Release\MPWeiXin.dll
+D:\搜狗高速下载\人脸识别demo\WebApplication1\MPWeiXin\obj\Release\MPWeiXin.pdb
+D:\搜狗高速下载\人脸识别demo\WebApplication1\MPWeiXin\obj\Release\MPWeiXin.csprojResolveAssemblyReference.cache
+F:\testsssss\人脸识别程序\WebApplication1\MPWeiXin\bin\Release\MPWeiXin.dll
+F:\testsssss\人脸识别程序\WebApplication1\MPWeiXin\bin\Release\MPWeiXin.pdb
+F:\testsssss\人脸识别程序\WebApplication1\MPWeiXin\bin\Release\HttpHelper.dll
+F:\testsssss\人脸识别程序\WebApplication1\MPWeiXin\obj\Release\MPWeiXin.csprojResolveAssemblyReference.cache
+F:\testsssss\人脸识别程序\WebApplication1\MPWeiXin\obj\Release\MPWeiXin.dll
+F:\testsssss\人脸识别程序\WebApplication1\MPWeiXin\obj\Release\MPWeiXin.pdb

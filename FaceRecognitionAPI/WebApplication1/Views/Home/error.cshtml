@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>error</title>
+    <link href="~/resources/error/normalize.css" rel="stylesheet" />
+    <link href="~/resources/error/demo.css" rel="stylesheet" />
+    <!--必要样式 404-->
+    <link href="~/resources/error/component.css" rel="stylesheet" />
+    <style type="text/css">
+        #Layer1 {
+            position: absolute;
+            width: 100%;
+            z-index: 2;
+            top: 60%;
+        }
+
+        .STYLE3 {
+            font-size: medium;
+        }
+    </style>
+</head>
+<body>
+    <div class="container demo-1">
+        <div class="content">
+            <div id="large-header" class="large-header" style="height: 946px;">
+                <canvas id="demo-canvas" width="1920" height="946"></canvas>
+                <h1 class="main-title">Error<br><span class="STYLE3">@ViewBag.msg</span></h1>
+            </div>
+        </div>
+    </div>
+    <script src="~/resources/error/TweenLite.js"></script>
+    <script src="~/resources/error/EasePack.js"></script>
+    <script src="~/resources/error/rAF.js"></script>
+    <script src="~/resources/error/demo-1.js"></script>
+</body>
+</html>

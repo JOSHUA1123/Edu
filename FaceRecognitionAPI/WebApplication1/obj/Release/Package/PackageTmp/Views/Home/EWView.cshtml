@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EWView</title>
+    
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/resources/wx/wwLogin-1.0.0.js"></script>
+    
+</head>
+<body style="background-color: darkslategray;">
+    <div> 
+        <input type="hidden" value="@ViewBag.appid" id="appid"/>
+        <input type="hidden" value="@ViewBag.agentid" id="agentid" />
+        <input type="hidden" value="@ViewBag.redirect_uri" id="redirect_uri" />
+        <div id="wx_reg" style="margin-top:10%;text-align:center;"></div>
+        <div style="text-align: center;width: 100%;position: fixed;bottom: 0;">
+            <img style="width:150px;" src="~/resources/wx/dsss.png" />
+        </div>
+
+    </div>
+
+    <script>
+       
+        window.WwLogin({
+            "id": "wx_reg",
+            "appid": $("#appid").val(),//"wwc964cecd9737ae67",
+            "agentid": $("#agentid").val(),//"1000032",
+            "redirect_uri": $("#redirect_uri").val(),// "https://www.rijiyuan.com/home/GetUserInfo",
+            "state": "STATE",
+            //"href": "",
+        });
+
+    </script>
+    
+</body>
+</html>

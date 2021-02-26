@@ -1,0 +1,2 @@
+2020-04-18 02:52:26, {"error_code":222202,"error_msg":"pic not has face","log_id":2505252010520,"timestamp":1587192723,"cached":0,"result":null}
+2020-04-18 02:52:48, {"error_code":222202,"error_msg":"pic not has face","log_id":8989992515841,"timestamp":1587192744,"cached":0,"result":null}

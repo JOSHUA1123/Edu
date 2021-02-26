@@ -1,0 +1,307 @@
+﻿
+@{
+    ViewBag.Title = "FaceIndex";
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>人脸识别注册信息</title>
+     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <script src="~/Content/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/html2canvas.js"></script>
+
+</head>
+<body>
+    @*<input type="button" title="开启摄像头" value="开启摄像头"  onclick="getMedia();" />
+    <input type="button" title="关闭摄像头" value="关闭摄像头"  onclick="CloseMedia();" /><br />*@
+    <video style="width:320px;" autoplay="autoplay"></video><hr />
+   <br />
+    <div>
+        <table cellpadding="1" border="1" style="width:424px;height:200px" >
+            <tr>
+                <td colspan="2" style="text-align:center"><label style="font-size:16px"><b>录入注册信息</b></label></td>
+            </tr>
+           <tr>
+               <th>姓名：</th>
+               <td><input id="UserName" placeholder="输入姓名" style="width:100%"/></td>
+           </tr>
+            <tr>
+                <th>工号：</th>
+                <td><input id="staffNO" placeholder="输入工号" style="width:100%" value="@ViewBag.staffNO" readonly="readonly"/></td>
+            </tr>
+           
+            @*<tr>
+                <th>出生年月</th>
+                <td><input id="Month" placeholder="出生年月，如：2019-04" style="width:100%" /></td>
+            </tr>
+            <tr>
+                <th>工作/学习单位</th>
+                <td><input id="Works" placeholder="输入工作或学习单位名称" style="width:100%" /></td>
+            </tr>*@
+            <tr>
+                <td colspan="3" style="text-align:center"><input onclick="getPhoto();" type="button" style="width:100%" value="注册" /></td>
+            </tr>
+        </table>
+    </div>
+    <canvas id="canvas1" width="320" height="300" style="display:none"></canvas>
+    <input type="button" style="display:none" title="视频" value="视频" onclick="getVedio();" /><br />
+    <canvas id="canvas2" style="display:none" width="480" height="320"></canvas>
+   
+
+    <script type="text/javascript">
+
+
+        var video = document.querySelector('video');
+        var audio, audioType;
+
+        var canvas1 = document.getElementById('canvas1');
+        var context1 = canvas1.getContext('2d');
+
+        var canvas2 = document.getElementById('canvas2');
+        var context2 = canvas2.getContext('2d');
+
+        //navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+        window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+
+        //var exArray = []; //存储设备源ID
+        //MediaStreamTrack.getSources(function (sourceInfos) {
+        //    for (var i = 0; i != sourceInfos.length; ++i) {
+        //        var sourceInfo = sourceInfos[i];
+        //        //这里会遍历audio,video，所以要加以区分
+        //        if (sourceInfo.kind === 'video') {
+        //            exArray.push(sourceInfo.id);
+        //        }
+        //    }
+        //});
+
+
+        // 设置事件监听器
+        window.addEventListener("DOMContentLoaded", function () {
+            if (navigator.mediaDevices === undefined) {
+                var div = document.createElement("div");
+                div.innerHTML = 'mediaDevices not supported';
+                document.body.appendChild(div);
+            }
+
+            navigator.getUserMedia = navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia;
+
+           
+
+        }, false);
+
+
+        $(function () {
+            getMedia();
+        });
+
+
+        function getMedia() {
+            //alert(navigator.getUserMedia);
+            //if (navigator.getUserMedia) {
+            //    navigator.getUserMedia({
+            //        'video': {
+            //            'optional': [{
+            //                'sourceId': ""//exArray[1] //0为前置摄像头，1为后置
+            //            }]
+            //        },
+            //        'audio': true
+            //    }, successFunc, errorFunc); //success是获取成功的回调函数
+            //}
+            //else {
+            //    alert('Native device media streaming (getUserMedia) not supported in this browser.');
+            //}
+
+            if (navigator.getUserMedia) {
+                navigator.getUserMedia({
+                    audio: true,
+                    video: {
+                        width: 320,
+                        height: 300
+                    }
+                },
+                    function (stream) {
+                        var video = document.querySelector('video');
+                        video.srcObject = stream;
+                        video.onloadedmetadata = function (e) {
+                            video.play();
+                        };
+                    },
+                    function (err) {
+                        alert("The following error occurred: " + err.name);
+                    }
+                );
+            } else {
+                var div = document.createElement("div");
+                div.innerHTML = 'getUserMedia not supported';
+                document.body.appendChild(div);
+                alert("getUserMedia not supported");
+            }
+
+        }
+
+        function successFunc(stream) {
+            mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[1];
+            //alert('Succeed to get media!');
+            if (video.mozSrcObject !== undefined) {
+                //Firefox中，video.mozSrcObject最初为null，而不是未定义的，我们可以靠这个来检测Firefox的支持
+                video.mozSrcObject = stream;
+            }
+            else {
+               
+                try {
+                    video.src = window.URL.createObjectURL(stream);
+                } catch (e) {
+                    video.srcObject = stream;
+                }
+               // video.src = window.URL && window.URL.createObjectURL(stream) || stream;
+            }
+
+            //video.play();
+
+            // 音频
+            audio = new Audio();
+            audioType = getAudioType(audio);
+            if (audioType) {
+                audio.src = 'polaroid.' + audioType;
+                audio.play();
+            }
+        }
+        function errorFunc(e) {
+            alert('Error！' + e);
+        }
+
+        // 将视频帧绘制到Canvas对象上,Canvas每60ms切换帧，形成肉眼视频效果
+        function drawVideoAtCanvas(video, context) {
+            window.setInterval(function () {
+                context.drawImage(video, 0, 0, 370, 370);
+            }, 20);
+        }
+
+        //获取音频格式
+        function getAudioType(element) {
+            if (element.canPlayType) {
+                if (element.canPlayType('audio/mp4; codecs="mp4a.40.5"') !== '') {
+                    return ('aac');
+                } else if (element.canPlayType('audio/ogg; codecs="vorbis"') !== '') {
+                    return ("ogg");
+                }
+            }
+            return false;
+        }
+
+        // vedio播放时触发，绘制vedio帧图像到canvas
+         video.addEventListener('play', function () {
+         drawVideoAtCanvas(video, context2);
+         }, false);
+
+        //拍照
+         function getPhoto() {
+            context1.drawImage(video, 0, 0, 320, 320); //将video对象内指定的区域捕捉绘制到画布上指定的区域，实现拍照。
+           
+             //获取网页中的canvas对象 
+            var canvas = $('#canvas1')[0];
+             //调用convertCanvasToImage函数将canvas转化为img形式  
+            var img = convertCanvasToImage(canvas);
+            //将img插入容器 
+            //$('#img').append(img);
+            var staff = $("#staffNO").val().trim()
+            if (staff!="") {
+
+             //进行人脸识别相关操作
+            $.ajax({
+                url: '/Home/Face_Registration',
+                type: 'post',
+                data: { imgData64: img.src, staffNO: staff },
+                dataType: 'json',
+                success: function (data) {
+                    var other = data.other;
+                    if (data.res == false) {
+                        alert("注册失败！");
+                        return;
+                    }
+                    else {
+                        var datas = eval("(" + data.info + ")");
+                        console.log(data);
+                        if (data.startcode == 221)
+                        {
+                            alert("当前人脸已存在！");
+                            return;
+                        }
+                        else if (datas.error_code == 0 && datas.error_msg == "SUCCESS")
+                        {
+                            //注册成功
+                            //记得保存人脸唯一标识码到数据库绑定人:data.result.face_token,这里就不做展示了
+                            //注意同步输入个人信息到数据库，登录或者查询时可以显示出来
+                            $.ajax({
+                                url: '/Home/face_userInfoSace',
+                                type: 'post',
+                                data: {
+                                    UserName: $("#UserName").val().trim(),
+                                    staffNO: $("#staffNO").val().trim(),
+                                    face_token: datas.result.face_token,
+                                    Guid_Id: other
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.res == false) {
+                                        alert(data.info);
+                                    }
+                                    else {
+                                        alert(data.info);
+                                    }
+
+                                }
+                            });
+                        }
+                       else {
+                           alert("错误信息："+data.error_msg);
+                           return;
+                       }
+                    }
+
+                }
+            });
+
+            } else {
+                alert("工号不能为空");
+            }
+         }
+
+         //从 canvas 提取图片 image 
+         function convertCanvasToImage(canvas) {
+             //新Image对象，可以理解为DOM 
+             var image = new Image();
+             // canvas.toDataURL 返回的是一串Base64编码的URL
+             // 指定格式 PNG 
+             image.src = canvas.toDataURL("image/png");
+             return image;
+         }
+
+        //视频
+        function getVedio() {
+            drawVideoAtCanvas(video, context2);
+        }
+
+        //关闭摄像头
+        function CloseMedia() {
+            mediaStreamTrack && mediaStreamTrack.stop();
+        }
+
+        //获取guid
+        function guid() {
+            function S4() {
+                return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+            }
+            return (S4() + S4() + "" + S4() + "" + S4() + "" + S4() + "" + S4() + S4() + S4());
+        }
+        
+       
+
+    </script>
+</body>
+</html>
+
+

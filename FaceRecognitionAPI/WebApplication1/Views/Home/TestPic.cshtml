@@ -1,0 +1,132 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+   
+    <title>TestPic</title>
+    
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/resources/wx/jweixin-1.2.0.js"></script>
+    @*<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>*@
+    <script>
+
+        function bindFace() {
+            //alert(123);
+            choosePic();
+        }
+
+        function choosePic() {
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有 'album', 
+                isSaveToAlbum: 0,//整型值，0表示拍照时不保存到系统相册，1表示自动保存，默认值是1
+                defaultCameraMode: "front",////表示进入拍照界面的默认模式，目前有normal与batch两种选择，normal表示普通单拍模式，batch表示连拍模式，不传该参数则为normal模式。从3.0.26版本开始支持front和batch_front两种值，其中front表示默认为前置摄像头单拍模式，batch_front表示默认为前置摄像头连拍模式。（注：用户进入拍照界面仍然可自由切换两种模式）
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    //console.log(localIds[0]);
+                    //getLocalData(localIds[0]);
+                    alert(localIds[0]);
+                    //$("#addImg").append("");
+                    var strs = '<img src="' + localIds[0] + '" width="50" class="images"  />';
+                    $("#addImg").append(strs);
+                }
+            });
+        }
+
+        function getLocalData(localid) {
+            //$('#modal-img').show();
+            //获取本地图片资源
+            wx.getLocalImgData({
+                localId: localid, // 图片的localID
+                success: function (res) {
+                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+
+                    alert(localData);
+                    $("#addImg").append("");
+                    var strs = '<img src="data:image/jpg;base64,' + localData + '" class="images" border="5px" />';
+                    $("#addImg").append(strs);
+
+                    //开始绑定
+                    //$.ajax({
+                    //    url: "${pageContext.request.contextPath}/wechat/bindface",
+                    //    type: "post",
+                    //    data: {
+                    //        img: localData
+                    //    },
+                    //    contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                    //    async: true,
+                    //    success: function (data) {
+                    //        if ("SUCCESS" == data.code) {
+                    //            location.reload();
+                    //            $("#img").src = "../../img/${openid}.jpg?time=" + Math.random();
+                    //            $("#addBtn").html("更新照片");
+                    //        } else {
+                    //            alert("" + data.message);
+                    //        }
+                    //    },
+                    //    complete: function () {
+                    //       // $('#modal-img').hide();
+                    //    }
+                    //})
+                }
+            });
+
+        }
+
+        $(function () {
+            //$('#modal-img').hide();
+            var link = location.href;
+            $.ajax({
+                url: "@Url.Action("GetParam","home")",
+                type: "post",
+                data:{"link":link},
+                async: true,
+                success: function (data) {
+                    try {
+                       // alert(data.url)
+                        wx.config({
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: data.appid, // 必填，公众号的唯一标识
+                            timestamp: data.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                            signature: data.signature,// 必填，签名，见附录1
+                            jsApiList: ["chooseImage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        });
+                    } catch (e) {
+
+                    }
+                    wx.error(function (res) {
+                        //conzole.log(res);
+                        alert(JSON.stringify(res));
+                    });
+
+                }
+            });
+            wx.ready(function () {
+                choosePic();
+            });
+        });
+    </script>
+</head>
+<body>
+
+
+    <div id="addImg">
+       
+    </div>
+    
+
+
+    <input type="button" value="sss" onclick="bindFace()" />
+    
+</body>
+</html>
